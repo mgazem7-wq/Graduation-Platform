@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أرشيف المشاريع - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .archive-hero {
+            background-color: #0f172a;
+            color: white;
+            padding: 64px 24px;
+            text-align: center;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-value { font-size: 2.5rem; font-weight: bold; color: #38bdf8; }
+        .stat-label { font-size: 1rem; color: #cbd5e1; }
+        .filter-bar {
+            background: white; padding: 24px; border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: -32px auto 32px; max-width: 1200px;
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;
+            max-width: 1200px; margin: 0 auto; padding: 0 24px 64px;
+        }
+        .archive-card { height: 100%; display: flex; flex-direction: column; }
+        .archive-card .card-body { flex: 1; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body style="background-color: #f8fafc;">
+    
+    <header class="flex justify-between items-center" style="padding: 16px 24px; background: white; border-bottom: 1px solid #eee;">
+        <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#2563eb,#7c3aed);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:1rem;color:#0f172a;">المنصة الوطنية لمشاريع التخرج</div>
+                <div style="font-size:0.75rem;color:#64748b;">جامعة تعز • كلية العلوم الإدارية</div>
+            </div>
+        </a>
+        <div style="display:flex;gap:10px;align-items:center;">
+            <a href="index.html" class="btn btn-ghost btn-sm">الرئيسية</a>
+            <a href="index.html" class="btn btn-outline btn-sm">تسجيل الدخول</a>
+        </div>
+    </header>
+
+    <div class="archive-hero">
+        <h1 style="font-size: 2.5rem; margin-bottom: 12px; font-weight: 700;">أرشيف مشاريع التخرج</h1>
+        <p style="font-size: 1rem; color: #94a3b8; max-width: 560px; margin: 0 auto 8px;">جامعة تعز • كلية العلوم الإدارية</p>
+        <p style="font-size: 0.9rem; color: #64748b; max-width: 560px; margin: 0 auto;">استعرض مشاريع التخرج المكتملة واستفد من نتائجها لأبحاثك ومشاريعك</p>
+        
+        <div class="stats-row" id="archive-stats">
+            <div class="stat-item"><span class="stat-value" id="stat-total">-</span><span class="stat-label">مشروع مكتمل</span></div>
+            <div class="stat-item"><span class="stat-value" id="stat-unis">-</span><span class="stat-label">جامعة</span></div>
+            <div class="stat-item"><span class="stat-value" id="stat-specs">-</span><span class="stat-label">تخصص</span></div>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <div style="flex: 1; min-width: 250px;">
+            <input type="text" id="search-input" class="form-input" placeholder="ابحث باسم المشروع، الكلمات المفتاحية..">
+        </div>
+        <div style="width: 180px;">
+            <select id="filter-uni" class="form-select">
+                <option value="">كل الجامعات</option>
+                <option value="جامعة تعز">جامعة تعز</option>
+                <option value="جامعة السعيد">جامعة السعيد</option>
+                <option value="جامعة الجند">جامعة الجند</option>
+            </select>
+        </div>
+        <div style="width: 180px;">
+            <select id="filter-spec" class="form-select">
+                <option value="">كل التخصصات</option>
+            </select>
+        </div>
+        <div style="width: 150px;">
+            <select id="sort-select" class="form-select">
+                <option value="recent">الأحدث</option>
+                <option value="grade">الأعلى تقييماً</option>
+            </select>
+        </div>
+        <button id="search-btn" class="btn btn-primary">بحث</button>
+    </div>
+
+    <div style="max-width: 1200px; margin: 0 auto 16px; padding: 0 24px; font-weight: 600; color: #475569;" id="results-count">
+        جاري تحميل المشاريع...
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+        <!-- Project cards -->
+    </div>
+    
+    <div style="text-align: center; margin-bottom: 64px;">
+        <button id="load-more-btn" class="btn btn-outline hidden">عرض المزيد</button>
+    </div>
+
+    <footer style="background: white; border-top: 1px solid #eee; padding: 24px; text-align: center; color: #64748b;">
+        <p>جميع الحقوق محفوظة &copy; 2026 - منصة مشاريع التخرج</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/archive.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let currentPage = 1;
+            let currentFilters = {};
+
+            // Populate spec filter from config
+            if (typeof populateSpecFilter === 'function') {
+              populateSpecFilter(document.getElementById('filter-spec'));
+            }
+
+            // Load Stats
+            if (window.loadArchiveStats) {
+                const stats = await window.loadArchiveStats();
+                document.getElementById('stat-total').textContent = stats.total;
+                document.getElementById('stat-unis').textContent = stats.universities;
+                document.getElementById('stat-specs').textContent = stats.specializations;
+            }
+
+            async function loadProjects(page = 1, append = false) {
+                const grid = document.getElementById('projects-grid');
+                if (!append) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:#64748b;">جاري التحميل...</div>';
+                
+                const { data, count } = await window.loadArchiveProjects({ ...currentFilters, page });
+                document.getElementById('results-count').textContent = `${count} نتيجة`;
+                
+                if (!append) grid.innerHTML = '';
+                
+                if (data.length === 0 && !append) {
+                    grid.innerHTML = '<div class="empty-state text-center" style="grid-column:1/-1;padding:48px;">لم يتم العثور على مشاريع تطابق بحثك.</div>';
+                } else {
+                    for (const project of data) {
+                        const report = window.getPublicReport ? await window.getPublicReport(project.id) : null;
+                        grid.innerHTML += window.renderArchiveCard(project, report?.file_url);
+                    }
+                }
+                
+                const pageSize = (typeof APP_CONFIG !== 'undefined' ? APP_CONFIG.pageSize : 9);
+                const hasMore = count > page * pageSize;
+                const loadMoreBtn = document.getElementById('load-more-btn');
+                if (hasMore) loadMoreBtn.classList.remove('hidden');
+                else loadMoreBtn.classList.add('hidden');
+            }
+
+            loadProjects();
+
+            document.getElementById('search-btn').addEventListener('click', () => {
+                currentFilters = {
+                    search: document.getElementById('search-input').value,
+                    specialization: document.getElementById('filter-spec').value,
+                    university: document.getElementById('filter-uni')?.value,
+                    sort: document.getElementById('sort-select').value
+                };
+                currentPage = 1;
+                loadProjects(1);
+            });
+
+            document.getElementById('search-input').addEventListener('keyup', e => {
+                if (e.key === 'Enter') document.getElementById('search-btn').click();
+            });
+
+            document.getElementById('load-more-btn').addEventListener('click', () => {
+                currentPage++;
+                loadProjects(currentPage, true);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم المشروع - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .score-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 8px solid #eee; margin: 0 auto;
+        }
+        .score-circle.excellent { border-color: #10b981; color: #10b981; }
+        .score-circle.good { border-color: #3b82f6; color: #3b82f6; }
+        .score-circle.pass { border-color: #f59e0b; color: #f59e0b; }
+        .score-circle.fail { border-color: #ef4444; color: #ef4444; }
+        .score-display { font-size: 2rem; font-weight: bold; }
+        .score-meter { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .score-fill { height: 100%; transition: width 0.3s ease; }
+        .score-fill.excellent { background: #10b981; }
+        .score-fill.good { background: #3b82f6; }
+        .score-fill.pass { background: #f59e0b; }
+        .score-fill.fail { background: #ef4444; }
+        .team-member-row { display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9; }
+        .team-member-row:last-child { border-bottom:none; }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+            <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+                <div style="width:36px;height:36px;background:var(--color-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M2 12l10-6 10 6-10 6z"/><path d="M6 14.5V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4.5"/></svg>
+                </div>
+                <div>
+                    <div class="sidebar-logo-text">مشاريع التخرج</div>
+                    <div class="sidebar-logo-sub">جامعة تعز</div>
+                </div>
+            </a>
+        </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">لوحة التحكم</a>
+                <a href="projects.html" class="nav-item active">المشاريع</a>
+                <a href="archive.html" class="nav-item">الأرشيف والمعرض</a>
+                <a href="settings.html" class="nav-item">الإعدادات</a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="sidebar-user-avatar">م</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebar-user-name">...</div>
+                    <div class="sidebar-user-role" id="sidebar-user-role">...</div>
+                </div>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">تقييم المشروع</div>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm" id="back-btn">← العودة للمشروع</button>
+                </div>
+            </header>
+
+            <div class="page-main" style="max-width: 860px; margin: 0 auto;">
+                <!-- Project & Team Header Card -->
+                <div class="card" style="margin-bottom:20px;">
+                    <div class="card-body">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+                            <div style="flex:1;">
+                                <h2 class="page-title" id="project-title" style="font-size:1.2rem;margin-bottom:6px;">جاري التحميل...</h2>
+                                <p class="text-muted" id="project-meta" style="font-size:0.875rem;margin-bottom:12px;">...</p>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <span id="project-spec-badge" style="background:#eff6ff;color:#2563eb;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;"></span>
+                                    <span id="project-status-badge" class="badge">...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Summary (shown in evaluate page) -->
+                        <div id="team-summary" style="margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9;display:none;">
+                            <div style="font-weight:600;font-size:0.875rem;color:#374151;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                                فريق المشروع — التقييم يطبق على الفريق ككل
+                            </div>
+                            <div id="team-members-list" style="display:flex;flex-direction:column;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evaluation Form Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <form id="evaluation-form">
+                            <!-- Criterion 1 -->
+                            <div class="form-group" style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div>
+                                        <label class="form-label mb-0" style="font-size: 1.1rem;">منهجية البحث</label>
+                                        <p class="form-hint">مدى وضوح منهجية البحث وتنظيمه العلمي</p>
+                                    </div>
+                                    <input type="number" id="score-methodology" class="form-input" style="width: 80px; text-align: center;" min="0" max="25" value="0" required>
+                                </div>
+                                <div class="score-meter"><div class="score-fill fail" id="bar-methodology" style="width: 0%"></div></div>
+                            </div>
+
+                            <!-- Criterion 2 -->
+                            <div class="form-group" style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div>
+                                        <label class="form-label mb-0" style="font-size: 1.1rem;">الابتكار والأصالة</label>
+                                        <p class="form-hint">مستوى الإبداع والإسهام في المجال</p>
+                                    </div>
+                                    <input type="number" id="score-innovation" class="form-input" style="width: 80px; text-align: center;" min="0" max="25" value="0" required>
+                                </div>
+                                <div class="score-meter"><div class="score-fill fail" id="bar-innovation" style="width: 0%"></div></div>
+                            </div>
+
+                            <!-- Criterion 3 -->
+                            <div class="form-group" style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div>
+                                        <label class="form-label mb-0" style="font-size: 1.1rem;">جودة التنفيذ</label>
+                                        <p class="form-hint">كفاءة التنفيذ التقني وجودة الكود/المنتج</p>
+                                    </div>
+                                    <input type="number" id="score-implementation" class="form-input" style="width: 80px; text-align: center;" min="0" max="25" value="0" required>
+                                </div>
+                                <div class="score-meter"><div class="score-fill fail" id="bar-implementation" style="width: 0%"></div></div>
+                            </div>
+
+                            <!-- Criterion 4 -->
+                            <div class="form-group" style="margin-bottom: 32px;">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div>
+                                        <label class="form-label mb-0" style="font-size: 1.1rem;">العرض والتوثيق</label>
+                                        <p class="form-hint">جودة التقرير والعرض التقديمي</p>
+                                    </div>
+                                    <input type="number" id="score-presentation" class="form-input" style="width: 80px; text-align: center;" min="0" max="25" value="0" required>
+                                </div>
+                                <div class="score-meter"><div class="score-fill fail" id="bar-presentation" style="width: 0%"></div></div>
+                            </div>
+
+                            <!-- Total Score -->
+                            <div style="text-align: center; margin-bottom: 32px;">
+                                <div class="score-circle fail" id="score-circle">
+                                    <div class="score-display"><span id="total-score-display">0</span>/100</div>
+                                    <div class="font-semibold" id="grade-label">ضعيف</div>
+                                </div>
+                            </div>
+
+                            <!-- Comments -->
+                            <div class="form-group">
+                                <label class="form-label">الملاحظات الأكاديمية <span style="color:red">*</span></label>
+                                <textarea id="eval-comments" class="form-textarea" rows="4" required placeholder="اكتب مبررات التقييم وملاحظاتك الخاصة بالفريق والمشروع..."></textarea>
+                                <p class="form-hint">يُرجى توثيق ملاحظاتك على أداء الفريق ومستوى المشروع ككل.</p>
+                            </div>
+
+                            <!-- Jury Final Approval -->
+                            <div class="form-group hidden" id="jury-approval-container" style="background: #fdf2f8; padding: 16px; border-radius: 8px; border: 1px solid #fbcfe8; margin-bottom: 24px;">
+                                <label class="flex items-center gap-2" style="cursor: pointer; font-weight: bold; color: #be185d;">
+                                    <input type="checkbox" id="is-final-checkbox" style="width: 18px; height: 18px;">
+                                    اعتماد نهائي للمشروع وإغلاق الملف
+                                </label>
+                                <p class="text-sm" style="color: #9d174d; margin-top: 8px; margin-right: 26px;">تنبيه: لا يمكن التراجع عن الاعتماد النهائي بعد حفظه، وسيتم إغلاق المشروع ونشره في الأرشيف.</p>
+                            </div>
+
+                            <div style="display: flex; gap: 16px; justify-content: flex-end;">
+                                <button type="submit" class="btn btn-primary" style="padding-left: 32px; padding-right: 32px;">حفظ التقييم</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/team.js"></script>
+    <script src="js/evaluations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            if (!projectId) { window.location.href = 'projects.html'; return; }
+
+            document.getElementById('back-btn').addEventListener('click', () => {
+                window.location.href = `project-detail.html?id=${projectId}`;
+            });
+
+            const currentUser = await getCurrentUser();
+            if (!currentUser || !['supervisor', 'jury', 'admin'].includes(currentUser.profile.role)) {
+                alert('غير مصرح لك بالدخول لهذه الصفحة');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (typeof updateSidebarUser === 'function') updateSidebarUser(currentUser.profile);
+            if (typeof initSidebar === 'function') initSidebar();
+
+            if (currentUser.profile.role === 'jury' || currentUser.profile.role === 'admin') {
+                document.getElementById('jury-approval-container').classList.remove('hidden');
+            }
+
+            // ---- Load Project (with team info) ----
+            let project = null;
+            if (IS_DEMO_MODE) {
+                project = getDemoProject(projectId);
+            } else {
+                const { data } = await supabaseClient.from('projects')
+                    .select('title, specialization, status, student:profiles!projects_student_id_fkey(full_name)')
+                    .eq('id', projectId).single();
+                project = data;
+            }
+
+            if (project) {
+                document.getElementById('project-title').textContent = project.title;
+                document.getElementById('project-spec-badge').textContent = project.specialization || '';
+
+                const STATUS_LABELS = { 'draft': 'مسودة', 'under_review': 'قيد المراجعة', 'in_progress': 'قيد التنفيذ', 'awaiting_jury': 'بانتظار التحكيم', 'needs_revision': 'بحاجة تعديل', 'completed': 'مكتمل' };
+                const badge = document.getElementById('project-status-badge');
+                if (badge) { badge.textContent = STATUS_LABELS[project.status] || project.status; badge.className = `badge badge-${project.status.replace('_', '-')}`; }
+
+                // ---- Team Info for Evaluator ----
+                const team = getProjectTeam(project);
+                if (team.length > 0) {
+                    const leaderName = team[0]?.name || project.student?.full_name || 'غير محدد';
+                    document.getElementById('project-meta').textContent = `${project.specialization} | قائد الفريق: ${leaderName} | ${team.length === 1 ? 'مشروع فردي' : `فريق ${team.length} أعضاء`}`;
+
+                    const teamSummaryEl = document.getElementById('team-summary');
+                    const teamMembersEl = document.getElementById('team-members-list');
+                    if (teamSummaryEl && teamMembersEl && team.length > 0) {
+                        teamSummaryEl.style.display = 'block';
+                        teamMembersEl.innerHTML = team.map(m => {
+                            const isLeader = m.role === 'leader';
+                            const initials = (m.name || '?').split(' ').map(n => n[0]).join('').substring(0, 2);
+                            return `<div class="team-member-row">
+                                <div style="width:32px;height:32px;border-radius:50%;background:${isLeader ? 'linear-gradient(135deg,#2563eb,#7c3aed)' : '#e5e7eb'};color:${isLeader ? '#fff' : '#6b7280'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0;">${initials}</div>
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;font-size:0.875rem;">${m.name}</div>
+                                    ${m.studentId ? `<div style="font-size:0.75rem;color:#94a3b8;">الرقم: ${m.studentId}</div>` : ''}
+                                </div>
+                                ${isLeader ? '<span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700;">👑 قائد الفريق</span>' : '<span style="background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:20px;font-size:0.72rem;">عضو</span>'}
+                            </div>`;
+                        }).join('');
+                    }
+                } else {
+                    document.getElementById('project-meta').textContent = `${project.specialization} | الطالب: ${project.student?.full_name || 'غير محدد'}`;
+                }
+            }
+
+            // ---- Init score calculation ----
+            if (typeof window.initScoreCalculation === 'function') {
+                window.initScoreCalculation();
+            }
+
+            // ---- Load existing evaluation ----
+            let existingEval = null;
+            if (IS_DEMO_MODE) {
+                const evals = getDemoEvaluations(projectId);
+                existingEval = evals.find(e => e.evaluator_id === currentUser.user.id) || null;
+            } else {
+                existingEval = await window.loadMyEvaluation(projectId);
+            }
+
+            if (existingEval) {
+                document.getElementById('score-methodology').value = existingEval.score_methodology || 0;
+                document.getElementById('score-innovation').value = existingEval.score_innovation || 0;
+                document.getElementById('score-implementation').value = existingEval.score_implementation || 0;
+                document.getElementById('score-presentation').value = existingEval.score_presentation || 0;
+                document.getElementById('eval-comments').value = existingEval.comments || '';
+                if (existingEval.is_final) document.getElementById('is-final-checkbox').checked = true;
+                document.getElementById('score-methodology').dispatchEvent(new Event('input'));
+            }
+
+            // ---- Handle submit ----
+            document.getElementById('evaluation-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.textContent = 'جاري الحفظ...';
+
+                try {
+                    const scores = {
+                        methodology: parseInt(document.getElementById('score-methodology').value) || 0,
+                        innovation: parseInt(document.getElementById('score-innovation').value) || 0,
+                        implementation: parseInt(document.getElementById('score-implementation').value) || 0,
+                        presentation: parseInt(document.getElementById('score-presentation').value) || 0
+                    };
+                    const total = scores.methodology + scores.innovation + scores.implementation + scores.presentation;
+                    const comments = document.getElementById('eval-comments').value;
+                    const isFinal = document.getElementById('is-final-checkbox')?.checked || false;
+                    const evaluatorRole = currentUser.profile.role === 'supervisor' ? 'supervisor' : 'jury';
+
+                    if (IS_DEMO_MODE) {
+                        const evalData = {
+                            project_id: projectId,
+                            evaluator_id: currentUser.user.id,
+                            evaluator_role: evaluatorRole,
+                            evaluator: { full_name: currentUser.profile.full_name, role: currentUser.profile.role },
+                            score_methodology: scores.methodology,
+                            score_innovation: scores.innovation,
+                            score_implementation: scores.implementation,
+                            score_presentation: scores.presentation,
+                            total_score: total,
+                            comments,
+                            is_final: isFinal
+                        };
+                        saveDemoEvaluation(evalData);
+
+                        if (isFinal) {
+                            const projects = LS.get('gp_projects', []);
+                            const idx = projects.findIndex(p => p.id === projectId);
+                            if (idx >= 0) {
+                                projects[idx].final_grade = total;
+                                projects[idx].status = 'completed';
+                                projects[idx].is_public = true;
+                                LS.set('gp_projects', projects);
+                            }
+                        }
+                    } else {
+                        await window.saveEvaluation(projectId, scores, comments, isFinal);
+                    }
+
+                    alert('تم حفظ التقييم بنجاح');
+                    window.location.href = `project-detail.html?id=${projectId}`;
+                } catch (error) {
+                    console.error(error);
+                    alert('حدث خطأ أثناء الحفظ: ' + error.message);
+                    btn.disabled = false;
+                    btn.textContent = 'حفظ التقييم';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

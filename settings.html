@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+            <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+                <div style="width:36px;height:36px;background:var(--color-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l10-6 10 6-10 6z"/><path d="M6 14.5V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4.5"/><path d="M22 12v6"/></svg>
+                </div>
+                <div>
+                    <div class="sidebar-logo-text">مشاريع التخرج</div>
+                    <div class="sidebar-logo-sub">جامعة تعز</div>
+                </div>
+            </a>
+        </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">لوحة التحكم</a>
+                <a href="projects.html" class="nav-item">المشاريع</a>
+                <a href="archive.html" class="nav-item">الأرشيف والمعرض</a>
+                <a href="settings.html" class="nav-item active">الإعدادات</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">إعدادات الحساب</div>
+                <div class="header-actions">
+                    <span id="user-info"></span>
+                    <button id="logout-btn" class="btn btn-secondary btn-sm">تسجيل الخروج</button>
+                </div>
+            </header>
+
+            <div class="page-main" style="max-width: 800px; margin: 0 auto;">
+                <h1 class="page-title mb-6">الملف الشخصي والإعدادات</h1>
+
+                <div class="card mb-6">
+                    <div class="card-header"><h3 class="card-title">المعلومات الشخصية</h3></div>
+                    <div class="card-body">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label class="form-label">الاسم الكامل</label>
+                                <input type="text" id="full_name" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">الجامعة</label>
+                                <input type="text" id="university" class="form-input">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label class="form-label">الكلية</label>
+                                    <input type="text" id="college" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">التخصص</label>
+                                    <input type="text" id="specialization" class="form-input">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="save-profile-btn">حفظ التغييرات</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-6">
+                    <div class="card-header"><h3 class="card-title">تغيير كلمة المرور</h3></div>
+                    <div class="card-body">
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label class="form-label">كلمة المرور الجديدة</label>
+                                <input type="password" id="new_password" class="form-input" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">تأكيد كلمة المرور</label>
+                                <input type="password" id="confirm_password" class="form-input" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-outline" id="save-password-btn">تحديث كلمة المرور</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-6">
+                    <div class="card-header"><h3 class="card-title">معلومات الحساب (للقراءة فقط)</h3></div>
+                    <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <div class="text-sm text-muted">البريد الإلكتروني</div>
+                            <div class="font-semibold mt-1" id="info-email">...</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-muted">الدور / الصلاحية</div>
+                            <div class="font-semibold mt-1" id="info-role">...</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-muted">الرقم الجامعي</div>
+                            <div class="font-semibold mt-1" id="info-studentid">-</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-muted">تاريخ التسجيل</div>
+                            <div class="font-semibold mt-1" id="info-created">...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border: 1px solid #fca5a5; background: #fef2f2;">
+                    <div class="card-body">
+                        <h3 class="card-title" style="color: #ef4444; margin-bottom: 8px;">منطقة الخطر</h3>
+                        <p class="text-sm" style="color: #991b1b; margin-bottom: 16px;">حذف حسابك سيؤدي إلى مسح بياناتك الشخصية نهائياً. لا يمكن التراجع عن هذا الإجراء.</p>
+                        <button class="btn btn-danger" id="delete-account-btn">حذف الحساب</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const currentUser = await getCurrentUser();
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('user-info').textContent = currentUser.profile.full_name;
+            
+            // Populate Form
+            document.getElementById('full_name').value = currentUser.profile.full_name || '';
+            document.getElementById('university').value = currentUser.profile.university || '';
+            document.getElementById('college').value = currentUser.profile.college || '';
+            document.getElementById('specialization').value = currentUser.profile.specialization || '';
+
+            // Populate Read-only Info
+            document.getElementById('info-email').textContent = currentUser.user.email;
+            
+            const roleLabels = { 'student': 'طالب', 'supervisor': 'مشرف', 'jury': 'لجنة تحكيم', 'admin': 'مدير النظام' };
+            document.getElementById('info-role').textContent = roleLabels[currentUser.profile.role] || currentUser.profile.role;
+            
+            if (currentUser.profile.student_id) {
+                document.getElementById('info-studentid').textContent = currentUser.profile.student_id;
+            }
+            
+            document.getElementById('info-created').textContent = new Date(currentUser.user.created_at).toLocaleDateString('ar-SA');
+
+            // Save Profile
+            document.getElementById('profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('save-profile-btn');
+                btn.disabled = true;
+                btn.textContent = 'جاري الحفظ...';
+
+                try {
+                    const updates = {
+                        full_name: document.getElementById('full_name').value,
+                        university: document.getElementById('university').value,
+                        college: document.getElementById('college').value,
+                        specialization: document.getElementById('specialization').value
+                    };
+
+                    const { error } = await supabaseClient
+                        .from('profiles')
+                        .update(updates)
+                        .eq('id', currentUser.user.id);
+
+                    if (error) throw error;
+                    
+                    alert('تم تحديث الملف الشخصي بنجاح');
+                    document.getElementById('user-info').textContent = updates.full_name;
+                } catch (error) {
+                    console.error(error);
+                    alert('حدث خطأ أثناء حفظ الملف الشخصي');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'حفظ التغييرات';
+                }
+            });
+
+            // Change Password
+            document.getElementById('password-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const newPass = document.getElementById('new_password').value;
+                const confirmPass = document.getElementById('confirm_password').value;
+
+                if (newPass !== confirmPass) {
+                    alert('كلمات المرور غير متطابقة');
+                    return;
+                }
+
+                const btn = document.getElementById('save-password-btn');
+                btn.disabled = true;
+                btn.textContent = 'جاري التحديث...';
+
+                try {
+                    const { error } = await supabaseClient.auth.updateUser({
+                        password: newPass
+                    });
+
+                    if (error) throw error;
+                    
+                    alert('تم تغيير كلمة المرور بنجاح');
+                    e.target.reset();
+                } catch (error) {
+                    console.error(error);
+                    alert('حدث خطأ أثناء تغيير كلمة المرور');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'تحديث كلمة المرور';
+                }
+            });
+
+            // Delete Account
+            document.getElementById('delete-account-btn').addEventListener('click', async () => {
+                if (confirm('هل أنت متأكد تماماً من رغبتك في حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                    // Note: Supabase requires Edge Function or admin SDK to delete user account securely from client
+                    // This is a placeholder for the flow.
+                    alert('يرجى التواصل مع مدير النظام لحذف حسابك نهائياً.');
+                }
+            });
+
+            document.getElementById('logout-btn')?.addEventListener('click', async () => {
+                await signOut();
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

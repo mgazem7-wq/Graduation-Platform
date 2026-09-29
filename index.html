@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول - المنصة الوطنية لمشاريع التخرج</title>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    * { box-sizing: border-box; }
+    body.auth-page {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Readex Pro', sans-serif;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    body.auth-page::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(37,99,235,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .auth-wrapper {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+    }
+    /* Platform header */
+    .platform-header {
+      text-align: center;
+      margin-bottom: 28px;
+      color: white;
+    }
+    .platform-logo {
+      width: 68px;
+      height: 68px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.4);
+    }
+    .platform-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 4px 0;
+    }
+    .platform-sub {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      margin: 0;
+    }
+    /* Auth Card */
+    .auth-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+      padding: 36px;
+      backdrop-filter: blur(10px);
+    }
+    .auth-card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0 0 24px 0;
+      text-align: center;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 7px; font-weight: 500; font-size: 0.9rem; color: #374151; }
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #f9fafb;
+    }
+    .form-control:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); background: #fff; }
+    .btn-login {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+    }
+    .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+    .btn-login:active { transform: translateY(0); }
+    .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    /* Quick Demo Buttons */
+    .demo-section {
+      margin-top: 20px;
+      padding: 16px;
+      background: linear-gradient(135deg, #fef3c7, #fef9e7);
+      border: 1.5px solid #fbbf24;
+      border-radius: 12px;
+    }
+    .demo-section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #92400e;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .demo-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-demo {
+      padding: 10px 12px;
+      border: 1.5px solid #fbbf24;
+      border-radius: 8px;
+      background: #fff;
+      color: #92400e;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .btn-demo:hover { background: #fbbf24; color: #fff; transform: translateY(-1px); }
+    .btn-demo-student { border-color: #3b82f6; color: #1d4ed8; }
+    .btn-demo-student:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .btn-demo-supervisor { border-color: #7c3aed; color: #6d28d9; }
+    .btn-demo-supervisor:hover { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+    /* Alert */
+    .alert-error {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 0.875rem;
+      display: none;
+      border: 1px solid #fca5a5;
+    }
+    /* Divider */
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+    .divider span { font-size: 0.8rem; color: #9ca3af; white-space: nowrap; }
+    /* Password toggle */
+    .input-wrap { position: relative; }
+    .password-toggle {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9ca3af;
+      padding: 2px;
+    }
+    .auth-footer { text-align: center; margin-top: 22px; color: #6b7280; font-size: 0.9rem; }
+    .auth-footer a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    .auth-footer a:hover { text-decoration: underline; }
+    /* Footer */
+    .global-footer {
+      text-align: center;
+      margin-top: 24px;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+    }
+    .options-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .options-row label { display: flex; align-items: center; gap: 7px; font-size: 0.875rem; color: #6b7280; cursor: pointer; }
+    .forgot-link { font-size: 0.875rem; color: #2563eb; text-decoration: none; }
+    .forgot-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-wrapper">
+    <div class="platform-header">
+      <div class="platform-logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+      </div>
+      <h1 class="platform-name">المنصة الوطنية لمشاريع التخرج</h1>
+      <p class="platform-sub">جامعة تعز • كلية العلوم الإدارية</p>
+    </div>
+
+    <div class="auth-card">
+      <h2 class="auth-card-title">تسجيل الدخول</h2>
+
+      <div id="error-alert" class="alert-error"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input type="email" id="email" class="form-control" required placeholder="name@university.edu.ye">
+        </div>
+
+        <div class="form-group">
+          <label for="password">كلمة المرور</label>
+          <div class="input-wrap">
+            <input type="password" id="password" class="form-control" required placeholder="••••••••" style="padding-left:44px;">
+            <button type="button" class="password-toggle" id="toggle-password" title="إظهار/إخفاء">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="options-row">
+          <label>
+            <input type="checkbox" id="remember"> تذكرني
+          </label>
+          <a href="#" id="forgot-password" class="forgot-link">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-login">
+          <span class="btn-text">تسجيل الدخول</span>
+        </button>
+      </form>
+
+      <div class="divider"><span>أو جرّب الوضع التجريبي</span></div>
+
+      <!-- Quick Demo Buttons -->
+      <div class="demo-section">
+        <div class="demo-section-title">
+          <span>🧪</span>
+          <span>دخول سريع - الوضع التجريبي (LocalStorage)</span>
+        </div>
+        <div class="demo-buttons">
+          <button class="btn-demo btn-demo-student" onclick="quickDemoLogin('student')">
+            🎓 دخول كطالب
+          </button>
+          <button class="btn-demo btn-demo-supervisor" onclick="quickDemoLogin('supervisor')">
+            👨‍🏫 دخول كمشرف أكاديمي
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        ليس لديك حساب؟ <a href="register.html">سجّل الآن</a>
+      </div>
+    </div>
+
+    <div class="global-footer">
+      &copy; 2026 المنصة الوطنية لمشاريع التخرج. جميع الحقوق محفوظة.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof redirectIfLoggedIn === 'function') {
+        await redirectIfLoggedIn();
+      }
+
+      const toggleBtn = document.getElementById('toggle-password');
+      const passwordInput = document.getElementById('password');
+      toggleBtn.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+      });
+
+      const form = document.getElementById('login-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const errorAlert = document.getElementById('error-alert');
+      const forgotPasswordLink = document.getElementById('forgot-password');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = passwordInput.value;
+
+        submitBtn.disabled = true;
+        submitBtn.querySelector('.btn-text').textContent = 'جاري تسجيل الدخول...';
+        errorAlert.style.display = 'none';
+
+        try {
+          if (typeof login === 'function') {
+            await login(email, password);
+            window.location.href = 'dashboard.html';
+          }
+        } catch (error) {
+          errorAlert.textContent = error.message || 'حدث خطأ أثناء تسجيل الدخول';
+          errorAlert.style.display = 'block';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.querySelector('.btn-text').textContent = 'تسجيل الدخول';
+        }
+      });
+
+      forgotPasswordLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        if (!email) {
+          errorAlert.textContent = 'الرجاء إدخال البريد الإلكتروني أولاً';
+          errorAlert.style.display = 'block';
+          return;
+        }
+        if (IS_DEMO_MODE) {
+          alert('في الوضع التجريبي، يمكنك الدخول مباشرةً باستخدام أزرار الدخول السريع أدناه.');
+          return;
+        }
+        try {
+          if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+            if (error) throw error;
+            alert('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.');
+          }
+        } catch (error) {
+          errorAlert.textContent = error.message;
+          errorAlert.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

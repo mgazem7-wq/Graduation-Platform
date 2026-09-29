@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="app-layout">
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+                <div style="width:36px;height:36px;background:var(--color-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l10-6 10 6-10 6z"/><path d="M6 14.5V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4.5"/><path d="M22 12v6"/></svg>
+                </div>
+                <div>
+                    <div class="sidebar-logo-text">مشاريع التخرج</div>
+                    <div class="sidebar-logo-sub">جامعة تعز</div>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-title">القائمة الرئيسية</div>
+            <a href="dashboard.html" class="nav-item active" data-page="dashboard">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                <span class="nav-label">لوحة التحكم</span>
+            </a>
+            <a href="projects.html" class="nav-item" data-page="projects">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" /></svg>
+                <span class="nav-label">المشاريع</span>
+            </a>
+            <a href="archive.html" class="nav-item" data-page="archive">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                <span class="nav-label">الأرشيف والمعرض</span>
+            </a>
+            
+            <div class="sidebar-section-title" style="margin-top:16px;">الحساب</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                <span class="nav-label">الإعدادات</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-user">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar" id="sidebar-user-avatar">م</div>
+                <div style="flex:1;min-width:0;">
+                    <div class="sidebar-user-name" id="sidebar-user-name">جارٍ التحميل...</div>
+                    <div class="sidebar-user-role" id="sidebar-user-role"></div>
+                </div>
+                <button onclick="logout()" class="btn btn-ghost btn-icon btn-sm" title="تسجيل الخروج" style="color:var(--sidebar-text);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" /></svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button class="btn btn-ghost btn-icon sidebar-toggle" style="display:none" id="mobile-menu-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+            </button>
+            <div class="page-breadcrumb" id="page-breadcrumb">
+                لوحة التحكم
+            </div>
+            <div style="margin-right:auto;display:flex;align-items:center;gap:12px;">
+                <div style="position:relative;">
+                    <button class="btn btn-ghost btn-icon" id="notif-btn" title="الإشعارات">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
+                    </button>
+                    <span class="header-notif-badge hidden" id="notif-badge" style="position:absolute;top:4px;right:4px;min-width:18px;height:18px;background:#DC2626;color:white;border-radius:9999px;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;"></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--color-text-secondary);">
+                    <div class="avatar sm" id="header-avatar" style="background:var(--color-primary);">م</div>
+                    <span id="header-user-name">مستخدم</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-main">
+            <div class="page-header flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="page-title">مرحباً بك مجدداً</h1>
+                    <p class="page-subtitle text-muted">نظرة عامة على حالة المشاريع والنشاطات</p>
+                </div>
+                <div class="page-actions hidden" id="student-actions">
+                    <a href="project-new.html" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        مشروع جديد
+                    </a>
+                </div>
+            </div>
+
+            <div class="stats-grid mb-6">
+                <div class="stat-card">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-icon-wrap blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">إجمالي المشاريع</div>
+                            <div class="stat-number" id="stat-total">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-icon-wrap amber">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">قيد التنفيذ</div>
+                            <div class="stat-number" id="stat-progress">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-icon-wrap purple">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">بانتظار التحكيم</div>
+                            <div class="stat-number" id="stat-jury">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-icon-wrap green">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">مشاريع مكتملة</div>
+                            <div class="stat-number" id="stat-completed">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-grid mb-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">المشاريع حسب التخصص</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="spec-chart" height="250"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">توزيع المشاريع حسب الحالة</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="status-chart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-6">
+                <div class="card-header flex items-center justify-between">
+                    <h3 class="card-title">أحدث المشاريع</h3>
+                    <a href="projects.html" class="btn btn-ghost btn-sm">عرض الكل</a>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>عنوان المشروع</th>
+                                    <th>التخصص</th>
+                                    <th>الحالة</th>
+                                    <th>قائد الفريق</th>
+                                    <th>الفريق</th>
+                                    <th>المشرف</th>
+                                    <th>آخر تحديث</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-projects-tbody">
+                                <tr><td colspan="8" class="text-center text-muted py-4">جارٍ التحميل...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/team.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع جديد - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="app-layout">
+    
+    <aside class="sidebar" id="sidebar">
+        <!-- Sidebar content -->
+        <div class="sidebar-logo">
+            <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+                <div style="width:36px;height:36px;background:var(--color-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l10-6 10 6-10 6z"/><path d="M6 14.5V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4.5"/><path d="M22 12v6"/></svg>
+                </div>
+                <div>
+                    <div class="sidebar-logo-text">مشاريع التخرج</div>
+                    <div class="sidebar-logo-sub">جامعة تعز</div>
+                </div>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-title">القائمة الرئيسية</div>
+            <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                <span class="nav-label">لوحة التحكم</span>
+            </a>
+            <a href="projects.html" class="nav-item active" data-page="projects">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" /></svg>
+                <span class="nav-label">المشاريع</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-user">
+            <!-- user info -->
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <main class="main-content">
+        <header class="top-header">
+            <!-- header content -->
+            <div class="page-breadcrumb" id="page-breadcrumb">
+                المشاريع / إضافة مشروع جديد
+            </div>
+        </header>
+
+        <div class="page-main max-w-4xl mx-auto">
+            <div class="page-header mb-6">
+                <h1 class="page-title">اقتراح مشروع تخرج جديد</h1>
+                <p class="page-subtitle text-muted">أدخل تفاصيل المشروع للمراجعة والاعتماد</p>
+            </div>
+
+            <!-- Steps -->
+            <div class="step-indicator flex justify-between mb-8 relative">
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -z-10 -translate-y-1/2 rounded"></div>
+                <div class="step-item flex flex-col items-center gap-2 active">
+                    <div class="step-circle w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
+                    <span class="step-label text-sm font-semibold">المعلومات الأساسية</span>
+                </div>
+                <div class="step-item flex flex-col items-center gap-2">
+                    <div class="step-circle w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center font-bold">2</div>
+                    <span class="step-label text-sm text-gray-500">الجامعة والمشرف</span>
+                </div>
+                <div class="step-item flex flex-col items-center gap-2">
+                    <div class="step-circle w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center font-bold">3</div>
+                    <span class="step-label text-sm text-gray-500">فريق العمل</span>
+                </div>
+                <div class="step-item flex flex-col items-center gap-2">
+                    <div class="step-circle w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center font-bold">4</div>
+                    <span class="step-label text-sm text-gray-500">مراجعة</span>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <form id="new-project-form">
+                    <!-- Step 1 -->
+                    <div id="step-1" class="step-content block">
+                        <h3 class="font-semibold text-lg mb-4 border-b pb-2">المعلومات الأساسية</h3>
+                        <div class="form-group mb-4">
+                            <label class="form-label">عنوان المشروع بالعربية <span class="text-red-500">*</span></label>
+                            <input type="text" id="p-title" class="form-input" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="form-label">عنوان المشروع بالإنجليزية</label>
+                            <input type="text" id="p-title-en" class="form-input" dir="ltr">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="form-label">ملخص المشروع <span class="text-red-500">*</span></label>
+                            <textarea id="p-abstract" class="form-textarea" rows="4" minlength="100" required></textarea>
+                            <div class="form-hint flex justify-between mt-1">
+                                <span>يجب أن لا يقل عن 100 حرف</span>
+                                <span id="char-count">0 / 100</span>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="form-label">الكلمات المفتاحية</label>
+                            <div class="tag-input-wrap form-input flex flex-wrap gap-2 p-2 min-h-[42px]" id="tags-container" style="height:auto;">
+                                <input type="text" id="tag-input" class="border-0 outline-none flex-1 min-w-[120px]" placeholder="اضغط Enter لإضافة كلمة...">
+                            </div>
+                            <input type="hidden" id="p-keywords">
+                        </div>
+                        <div class="flex justify-end gap-2 mt-6">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">التالي</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="step-2" class="step-content hidden">
+                        <h3 class="font-semibold text-lg mb-4 border-b pb-2">الجامعة والمشرف</h3>
+                        <div class="form-grid-2 grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group">
+                                <label class="form-label">الجامعة <span class="text-red-500">*</span></label>
+                                <select id="p-university" class="form-select" required onchange="onProjectUniversityChange()">
+                                    <option value="">اختر الجامعة...</option>
+                                    <option value="جامعة تعز">جامعة تعز</option>
+                                    <option value="جامعة السعيد">جامعة السعيد</option>
+                                    <option value="جامعة الجند">جامعة الجند</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">الكلية <span class="text-red-500">*</span></label>
+                                <select id="p-college" class="form-select" required>
+                                    <option value="">اختر الكلية...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-grid-2 grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group">
+                                <label class="form-label">التخصص <span class="text-red-500">*</span></label>
+                                <select id="p-specialization" class="form-select" required>
+                                    <option value="">اختر التخصص...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">المشرف الأكاديمي (اختياري)</label>
+                                <select id="p-supervisor" class="form-select">
+                                    <option value="">اختر المشرف...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-6">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(1)">السابق</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">التالي</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Team Management -->
+                    <div id="step-3" class="step-content hidden">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1px solid #e5e7eb;padding-bottom:12px;">
+                            <h3 class="font-semibold text-lg" style="margin:0;">أعضاء فريق المشروع</h3>
+                            <span id="team-counter" style="background:#e0e7ff;color:#3730a3;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:700;">أعضاء الفريق: 1 / 5</span>
+                        </div>
+                        
+                        <div style="background:#fffbeb;border:1px solid #fbbf24;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:0.85rem;color:#92400e;display:flex;gap:8px;align-items:flex-start;">
+                            <span style="font-size:1rem;">ℹ️</span>
+                            <div>أنت مضاف تلقائياً كـ <strong>قائد الفريق</strong>. يمكن أن يتكون الفريق من 1 إلى 5 أعضاء إجمالاً. الحد الأقصى للأعضاء الإضافيين 4 أشخاص.</div>
+                        </div>
+
+                        <!-- Members table -->
+                        <div style="margin-bottom:20px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+                            <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+                                <thead>
+                                    <tr style="background:#f8fafc;border-bottom:1px solid #e5e7eb;">
+                                        <th style="padding:10px 16px;text-align:right;font-weight:600;color:#64748b;">الاسم</th>
+                                        <th style="padding:10px 16px;text-align:right;font-weight:600;color:#64748b;">الرقم الجامعي</th>
+                                        <th style="padding:10px 16px;text-align:right;font-weight:600;color:#64748b;">البريد الإلكتروني</th>
+                                        <th style="padding:10px 16px;text-align:center;font-weight:600;color:#64748b;">الدور</th>
+                                        <th style="padding:10px 16px;text-align:center;font-weight:600;color:#64748b;">إجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="members-table-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Add member form -->
+                        <div id="add-member-section">
+                            <div id="member-error-msg" style="display:none;background:#fee2e2;color:#b91c1c;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:0.875rem;border:1px solid #fca5a5;"></div>
+                            
+                            <div style="background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:20px;" id="add-member-form-wrap">
+                                <div style="font-weight:600;color:#374151;margin-bottom:14px;display:flex;align-items:center;gap:6px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" /></svg>
+                                    إضافة عضو جديد للفريق
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                                    <div>
+                                        <label style="font-size:0.8rem;font-weight:600;color:#374151;display:block;margin-bottom:4px;">الاسم الكامل <span style="color:red">*</span></label>
+                                        <input type="text" id="new-member-name" class="form-input" placeholder="مثال: سلمى عبدالله الأحمد" style="width:100%;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:0.8rem;font-weight:600;color:#374151;display:block;margin-bottom:4px;">الرقم الجامعي <span style="color:red">*</span></label>
+                                        <input type="text" id="new-member-sid" class="form-input" placeholder="مثال: 20220099" style="width:100%;">
+                                    </div>
+                                    <div style="grid-column:1/-1;">
+                                        <label style="font-size:0.8rem;font-weight:600;color:#374151;display:block;margin-bottom:4px;">البريد الإلكتروني <span style="color:red">*</span></label>
+                                        <input type="email" id="new-member-email" class="form-input" placeholder="مثال: student@taiz.edu.ye" style="width:100%;" dir="ltr">
+                                    </div>
+                                </div>
+                                <div style="display:flex;justify-content:flex-end;">
+                                    <button type="button" id="add-member-btn" class="btn btn-primary btn-sm" onclick="addTeamMember()">
+                                        + إضافة للفريق
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="team-max-msg" style="display:none;background:#f0fdf4;border:1px solid #86efac;color:#166534;padding:10px 14px;border-radius:8px;margin-top:12px;font-size:0.875rem;">
+                                ✅ وصل الفريق إلى الحد الأقصى (5 أعضاء). لا يمكن إضافة المزيد.
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-6">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(2)">السابق</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4)">التالي</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div id="step-4" class="step-content hidden">
+                        <h3 class="font-semibold text-lg mb-4 border-b pb-2">مراجعة وإرسال</h3>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4 text-sm">
+                            <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
+                                <div><dt class="text-gray-500">العنوان:</dt><dd id="rev-title" class="font-semibold"></dd></div>
+                                <div><dt class="text-gray-500">الجامعة/الكلية:</dt><dd id="rev-uni"></dd></div>
+                                <div><dt class="text-gray-500">التخصص:</dt><dd id="rev-spec"></dd></div>
+                                <div><dt class="text-gray-500">المشرف:</dt><dd id="rev-sup"></dd></div>
+                                <div class="md:col-span-2"><dt class="text-gray-500">الملخص:</dt><dd id="rev-abs" class="mt-1"></dd></div>
+                            </dl>
+                        </div>
+
+                        <!-- Team review section -->
+                        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:16px;margin-bottom:20px;">
+                            <div style="font-weight:600;color:#1e40af;margin-bottom:10px;font-size:0.9rem;">
+                                👥 فريق المشروع (<span id="rev-team-count">1</span> عضو)
+                            </div>
+                            <div id="rev-team-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-6">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(3)">تعديل</button>
+                            <button type="button" class="btn btn-primary" id="btn-submit" onclick="submitProject()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                                إنشاء المشروع
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/team.js"></script>
+    <script src="js/projects.js"></script>
+    <script>
+        // ---- Team State ----
+        const MAX_TEAM_SIZE = 5;
+        let _teamMembers = []; // extra members only (not leader)
+        let _leaderInfo = { userId: null, name: '', studentId: '', email: '' };
+
+        // ---- Render members table ----
+        function renderMembersTable() {
+            const tbody = document.getElementById('members-table-body');
+            if (!tbody) return;
+
+            const total = 1 + _teamMembers.length;
+            const counter = document.getElementById('team-counter');
+            if (counter) counter.textContent = `أعضاء الفريق: ${total} / ${MAX_TEAM_SIZE}`;
+
+            const addSection = document.getElementById('add-member-form-wrap');
+            const maxMsg = document.getElementById('team-max-msg');
+            if (total >= MAX_TEAM_SIZE) {
+                if (addSection) addSection.style.display = 'none';
+                if (maxMsg) maxMsg.style.display = 'block';
+            } else {
+                if (addSection) addSection.style.display = 'block';
+                if (maxMsg) maxMsg.style.display = 'none';
+            }
+
+            // Build rows
+            let html = `<tr style="background:#eff6ff;">
+                <td style="padding:10px 16px;font-weight:600;">${_leaderInfo.name || 'أنا (القائد)'}</td>
+                <td style="padding:10px 16px;color:#64748b;">${_leaderInfo.studentId || '-'}</td>
+                <td style="padding:10px 16px;color:#64748b;">${_leaderInfo.email || '-'}</td>
+                <td style="padding:10px 16px;text-align:center;"><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:0.75rem;font-weight:700;">👑 قائد الفريق</span></td>
+                <td style="padding:10px 16px;text-align:center;color:#9ca3af;">-</td>
+            </tr>`;
+
+            _teamMembers.forEach((m, idx) => {
+                html += `<tr style="border-top:1px solid #f1f5f9;">
+                    <td style="padding:10px 16px;">${m.name}</td>
+                    <td style="padding:10px 16px;color:#64748b;">${m.studentId}</td>
+                    <td style="padding:10px 16px;color:#64748b;">${m.email}</td>
+                    <td style="padding:10px 16px;text-align:center;"><span style="background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:20px;font-size:0.75rem;">عضو فريق</span></td>
+                    <td style="padding:10px 16px;text-align:center;">
+                        <button type="button" onclick="removeTeamMember(${idx})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.8rem;font-weight:600;padding:4px 8px;border-radius:4px;" title="إزالة العضو">
+                            ✕ إزالة
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // ---- Add team member with validation ----
+        window.addTeamMember = function() {
+            const errorEl = document.getElementById('member-error-msg');
+            const showError = (msg) => { errorEl.textContent = msg; errorEl.style.display = 'block'; };
+            const clearError = () => { errorEl.style.display = 'none'; };
+
+            const name = document.getElementById('new-member-name')?.value.trim();
+            const studentId = document.getElementById('new-member-sid')?.value.trim();
+            const email = document.getElementById('new-member-email')?.value.trim();
+
+            clearError();
+
+            // Size check
+            if (1 + _teamMembers.length >= MAX_TEAM_SIZE) {
+                showError(`الحد الأقصى هو ${MAX_TEAM_SIZE} أعضاء بما في ذلك القائد.`);
+                return;
+            }
+
+            // Validate using team.js
+            const validationError = validateNewMember(_teamMembers, { name, studentId, email }, _leaderInfo);
+            if (validationError) {
+                showError(validationError);
+                return;
+            }
+
+            // Add member
+            _teamMembers.push({ userId: null, name, studentId, email, role: 'member' });
+
+            // Clear inputs
+            document.getElementById('new-member-name').value = '';
+            document.getElementById('new-member-sid').value = '';
+            document.getElementById('new-member-email').value = '';
+            clearError();
+
+            renderMembersTable();
+        };
+
+        // ---- Remove member ----
+        window.removeTeamMember = function(idx) {
+            _teamMembers.splice(idx, 1);
+            renderMembersTable();
+        };
+
+        // ---- Update review (step 4) ----
+        const _origUpdateReview = window.updateReview;
+        window.updateReview = function() {
+            const get = id => document.getElementById(id)?.value || '-';
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+            set('rev-title', get('p-title'));
+            set('rev-uni', get('p-university') + ' - ' + get('p-college'));
+            set('rev-spec', get('p-specialization'));
+            const supSelect = document.getElementById('p-supervisor');
+            set('rev-sup', supSelect?.options[supSelect.selectedIndex]?.text || '-');
+            set('rev-abs', get('p-abstract'));
+
+            // Team review
+            const total = 1 + _teamMembers.length;
+            const countEl = document.getElementById('rev-team-count');
+            if (countEl) countEl.textContent = total;
+
+            const listEl = document.getElementById('rev-team-list');
+            if (listEl) {
+                const allMembers = [
+                    { ..._leaderInfo, role: 'leader' },
+                    ..._teamMembers.map(m => ({ ...m, role: 'member' }))
+                ];
+                listEl.innerHTML = allMembers.map(m => {
+                    const isLeader = m.role === 'leader';
+                    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;${isLeader ? 'font-weight:600;' : ''}">
+                        <span style="width:20px;height:20px;border-radius:50%;background:${isLeader ? '#2563eb' : '#e5e7eb'};color:${isLeader ? '#fff' : '#6b7280'};display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;flex-shrink:0;">${isLeader ? '👑' : (allMembers.indexOf(m))}</span>
+                        <span>${m.name}</span>
+                        ${isLeader ? '<span style="font-size:0.75rem;color:#3b82f6;">(قائد الفريق)</span>' : ''}
+                        <span style="font-size:0.75rem;color:#94a3b8;margin-right:auto;">${m.studentId}</span>
+                    </div>`;
+                }).join('');
+            }
+        };
+
+        // ---- Override submitProject to include team data ----
+        window.submitProject = async function() {
+            const btn = document.getElementById('btn-submit');
+            if (btn) { btn.disabled = true; btn.innerText = 'جارٍ الإرسال...'; }
+
+            try {
+                const auth = await getCurrentUser();
+                if (!auth) throw new Error("غير مسجل الدخول");
+
+                const teamLeader = {
+                    userId: auth.user.id,
+                    name: auth.profile.full_name,
+                    studentId: auth.profile.student_id || '',
+                    email: auth.profile.email || auth.user.email || '',
+                    role: 'leader'
+                };
+
+                const projectData = {
+                    id: IS_DEMO_MODE ? ('proj-' + Date.now()) : undefined,
+                    title: document.getElementById('p-title')?.value,
+                    title_en: document.getElementById('p-title-en')?.value,
+                    abstract: document.getElementById('p-abstract')?.value,
+                    keywords: window._projectTags || [],
+                    specialization: document.getElementById('p-specialization')?.value,
+                    university: document.getElementById('p-university')?.value,
+                    college: document.getElementById('p-college')?.value,
+                    supervisor_id: document.getElementById('p-supervisor')?.value || null,
+                    student_id: auth.user.id,
+                    status: 'draft',
+                    academic_year: new Date().getFullYear(),
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    // Team fields
+                    teamLeader: teamLeader,
+                    teamMembers: [..._teamMembers],
+                    teamSize: 1 + _teamMembers.length,
+                    // Backward-compat display fields
+                    student: { full_name: auth.profile.full_name },
+                    supervisor: { full_name: '' }
+                };
+
+                if (IS_DEMO_MODE) {
+                    const projects = LS.get('gp_projects', []);
+                    projects.unshift(projectData);
+                    LS.set('gp_projects', projects);
+                    window.location.href = `project-detail.html?id=${projectData.id}`;
+                    return;
+                }
+
+                const { data, error } = await supabaseClient.from('projects').insert({
+                    title: projectData.title, title_en: projectData.title_en,
+                    abstract: projectData.abstract, keywords: projectData.keywords,
+                    specialization: projectData.specialization, university: projectData.university,
+                    college: projectData.college, supervisor_id: projectData.supervisor_id,
+                    student_id: projectData.student_id, status: projectData.status,
+                    academic_year: projectData.academic_year
+                }).select().single();
+
+                if (error) throw error;
+
+                // Insert team members
+                if (_teamMembers.length > 0) {
+                    // For known users: try to find by studentId in profiles
+                    // For demo: store as JSON in a separate metadata column (future)
+                    await supabaseClient.from('project_members').insert(
+                        _teamMembers
+                            .filter(m => m.userId)
+                            .map(m => ({ project_id: data.id, student_id: m.userId, role: 'member' }))
+                    );
+                }
+
+                window.location.href = `project-detail.html?id=${data.id}`;
+
+            } catch (err) {
+                console.error('Error creating project:', err);
+                alert('حدث خطأ أثناء إنشاء المشروع: ' + err.message);
+                if (btn) { btn.disabled = false; btn.innerText = 'إنشاء المشروع'; }
+            }
+        };
+
+        // ---- Init ----
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof requireAuth === 'function') {
+                const auth = await requireAuth();
+                if (!auth) return;
+
+                if (auth.profile.role !== 'student') {
+                    window.location.href = 'projects.html';
+                    return;
+                }
+
+                // Store leader info
+                _leaderInfo = {
+                    userId: auth.user.id,
+                    name: auth.profile.full_name,
+                    studentId: auth.profile.student_id || '',
+                    email: auth.profile.email || auth.user.email || '',
+                    role: 'leader'
+                };
+
+                // Wire university hierarchy
+                if (typeof wireHierarchySelects === 'function') {
+                    wireHierarchySelects('p-university', 'p-college', 'p-specialization');
+                }
+                const uniEl = document.getElementById('p-university');
+                if (uniEl && auth.profile.university) {
+                    uniEl.value = auth.profile.university;
+                    uniEl.dispatchEvent(new Event('change'));
+                    setTimeout(() => {
+                        const colEl = document.getElementById('p-college');
+                        if (colEl && auth.profile.college) {
+                            colEl.value = auth.profile.college;
+                            colEl.dispatchEvent(new Event('change'));
+                            setTimeout(() => {
+                                const specEl = document.getElementById('p-specialization');
+                                if (specEl && auth.profile.specialization) specEl.value = auth.profile.specialization;
+                            }, 50);
+                        }
+                    }, 50);
+                }
+
+                if (IS_DEMO_MODE && typeof onProjectUniversityChange === 'function') {
+                    onProjectUniversityChange();
+                }
+
+                // Tags input
+                window._projectTags = [];
+                const tagInput = document.getElementById('tag-input');
+                const tagsContainer = document.getElementById('tags-container');
+                if (tagInput && tagsContainer) {
+                    function renderTags() {
+                        tagsContainer.querySelectorAll('.ptag').forEach(e => e.remove());
+                        window._projectTags.forEach((t, i) => {
+                            const span = document.createElement('span');
+                            span.className = 'ptag';
+                            span.style.cssText = 'background:#eff6ff;color:#2563eb;padding:2px 8px;border-radius:4px;font-size:0.8rem;display:inline-flex;align-items:center;gap:4px;';
+                            span.innerHTML = `${t} <button type="button" style="background:none;border:none;cursor:pointer;color:#ef4444;font-weight:bold;padding:0 2px;" onclick="window._projectTags.splice(${i},1);renderTags()">×</button>`;
+                            tagsContainer.insertBefore(span, tagInput);
+                        });
+                    }
+                    window.renderTags = renderTags;
+                    tagInput.addEventListener('keydown', e => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const val = tagInput.value.trim();
+                            if (val && !window._projectTags.includes(val)) {
+                                window._projectTags.push(val);
+                                tagInput.value = '';
+                                renderTags();
+                            }
+                        }
+                    });
+                }
+
+                const abstract = document.getElementById('p-abstract');
+                if (abstract) {
+                    abstract.addEventListener('input', () => {
+                        document.getElementById('char-count').innerText = `${abstract.value.length} / 100`;
+                    });
+                }
+
+                // Render initial members table with leader
+                renderMembersTable();
+
+                // Enter key on member email → add
+                document.getElementById('new-member-email')?.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') { e.preventDefault(); addTeamMember(); }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

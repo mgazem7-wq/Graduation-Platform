@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب جديد - منصة مشاريع التخرج</title>
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    body.auth-page { 
+      background-color: var(--bg-body, #f8f9fa); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: 100vh; 
+      margin: 0; 
+      font-family: 'Readex Pro', sans-serif; 
+      padding: 40px 20px;
+    }
+    .auth-container { width: 100%; max-width: 600px; }
+    .auth-card { 
+      background: #fff; 
+      border-radius: 12px; 
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05); 
+      padding: 32px; 
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: #e5e7eb;
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+    .step {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #9ca3af;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s;
+    }
+    .step.active {
+      border-color: var(--primary-color, #2563eb);
+      color: var(--primary-color, #2563eb);
+    }
+    .step.completed {
+      background: var(--primary-color, #2563eb);
+      border-color: var(--primary-color, #2563eb);
+      color: #fff;
+    }
+    
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeIn 0.3s ease; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2.step-title { margin: 0 0 24px 0; font-size: 1.5rem; text-align: center; }
+
+    /* Role Selector */
+    .role-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .role-option {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .role-option:hover { border-color: #93c5fd; background: #eff6ff; }
+    .role-option.selected { border-color: var(--primary-color, #2563eb); background: #eff6ff; }
+    .role-icon { width: 48px; height: 48px; margin: 0 auto 12px; color: var(--primary-color, #2563eb); }
+    .role-option h3 { margin: 0 0 8px 0; font-size: 1.1rem; }
+    .role-option p { margin: 0; color: #6b7280; font-size: 0.85rem; line-height: 1.4; }
+
+    /* Form Fields */
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.95rem; }
+    .form-control { 
+      width: 100%; 
+      padding: 12px 14px; 
+      border: 1px solid #d1d5db; 
+      border-radius: 8px; 
+      font-family: inherit; 
+      font-size: 1rem;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    /* Password Strength */
+    .password-strength { height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .strength-bar { height: 100%; width: 0; transition: all 0.3s; }
+    .strength-weak { background: #ef4444; width: 33%; }
+    .strength-medium { background: #f59e0b; width: 66%; }
+    .strength-strong { background: #10b981; width: 100%; }
+    .strength-text { font-size: 0.8rem; color: #6b7280; margin-top: 4px; display: block; }
+
+    /* Buttons */
+    .btn-group { display: flex; gap: 12px; margin-top: 32px; }
+    .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 1rem; text-align: center; border: none; }
+    .btn-primary { background: var(--primary-color, #2563eb); color: #fff; flex: 1; }
+    .btn-secondary { background: #f3f4f6; color: #374151; }
+    .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* Review Step */
+    .review-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .review-item { display: flex; margin-bottom: 12px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; }
+    .review-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+    .review-label { width: 40%; color: #6b7280; font-weight: 500; font-size: 0.9rem; }
+    .review-value { width: 60%; font-weight: 600; color: #111827; }
+
+    .alert-error { background: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; display: none; }
+    .alert-success { background: #d1fae5; color: #065f46; padding: 16px; border-radius: 8px; text-align: center; display: none; }
+
+    .auth-footer { text-align: center; margin-top: 24px; color: #4b5563; font-size: 0.95rem; }
+    .auth-footer a { color: var(--primary-color, #2563eb); text-decoration: none; font-weight: 500; }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div id="success-alert" class="alert-success">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 16px; display: block; color: #10b981;">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h3 style="margin: 0 0 8px 0;">تم إنشاء الحساب بنجاح!</h3>
+        <p style="margin: 0 0 16px 0;">يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.</p>
+        <a href="index.html" class="btn btn-primary" style="display: inline-block; text-decoration: none;">العودة لتسجيل الدخول</a>
+      </div>
+
+      <div id="form-container">
+        <div class="step-indicator">
+          <div class="step active" id="indicator-1">1</div>
+          <div class="step" id="indicator-2">2</div>
+          <div class="step" id="indicator-3">3</div>
+        </div>
+
+        <div id="error-alert" class="alert-error"></div>
+
+        <form id="register-form">
+          <!-- Step 1: Role Selection -->
+          <div class="form-step active" id="step-1">
+            <h2 class="step-title">اختر نوع حسابك</h2>
+            <div class="role-selector">
+              <div class="role-option" data-role="student">
+                <svg class="role-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <h3>طالب</h3>
+                <p>للطلاب الخريجين لتسجيل وتقديم وإدارة مشاريع التخرج.</p>
+              </div>
+              <div class="role-option" data-role="supervisor">
+                <svg class="role-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <h3>مشرف أكاديمي</h3>
+                <p>لأعضاء هيئة التدريس للإشراف ومتابعة مشاريع الطلاب.</p>
+              </div>
+            </div>
+            <input type="hidden" id="role" name="role" required>
+            <div class="btn-group" style="justify-content: flex-end;">
+              <button type="button" class="btn btn-primary" id="btn-next-1" disabled>التالي</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Personal Information -->
+          <div class="form-step" id="step-2">
+            <h2 class="step-title">المعلومات الشخصية</h2>
+            
+            <div class="form-group">
+              <label for="full_name">الاسم الرباعي <span style="color:red">*</span></label>
+              <input type="text" id="full_name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">البريد الإلكتروني الجامعي <span style="color:red">*</span></label>
+              <input type="email" id="email" class="form-control" required placeholder="name@university.edu">
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="password">كلمة المرور <span style="color:red">*</span></label>
+                <input type="password" id="password" class="form-control" required minlength="8">
+                <div class="password-strength"><div class="strength-bar" id="strength-bar"></div></div>
+                <span class="strength-text" id="strength-text">يجب أن تحتوي على 8 أحرف على الأقل</span>
+              </div>
+              <div class="form-group">
+                <label for="confirm_password">تأكيد كلمة المرور <span style="color:red">*</span></label>
+                <input type="password" id="confirm_password" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="university">الجامعة <span style="color:red">*</span></label>
+              <select id="university" class="form-control" required>
+                <option value="">اختر الجامعة</option>
+                <option value="جامعة تعز" selected>جامعة تعز</option>
+                <option value="جامعة السعيد">جامعة السعيد</option>
+                <option value="جامعة الجند">جامعة الجند</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="college">الكلية <span style="color:red">*</span></label>
+                <select id="college" class="form-control" required>
+                  <option value="">اختر الكلية</option>
+                  <option value="كلية العلوم الإدارية" selected>كلية العلوم الإدارية</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="specialization">التخصص <span style="color:red">*</span></label>
+                <select id="specialization" class="form-control" required>
+                  <option value="">اختر التخصص</option>
+                  <option value="علوم البيانات">علوم البيانات</option>
+                  <option value="المحاسبة">المحاسبة</option>
+                  <option value="التسويق">التسويق</option>
+                  <option value="الإدارة">الإدارة</option>
+                  <option value="العلوم المالية والمصرفية">العلوم المالية والمصرفية</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" id="student-id-group" style="display: none;">
+              <label for="student_id">الرقم الجامعي <span style="color:red">*</span></label>
+              <input type="text" id="student_id" class="form-control">
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" id="btn-prev-2">السابق</button>
+              <button type="button" class="btn btn-primary" id="btn-next-2">التالي</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Review & Confirm -->
+          <div class="form-step" id="step-3">
+            <h2 class="step-title">مراجعة وتأكيد</h2>
+            
+            <div class="review-box">
+              <div class="review-item">
+                <div class="review-label">نوع الحساب</div>
+                <div class="review-value" id="rev-role"></div>
+              </div>
+              <div class="review-item">
+                <div class="review-label">الاسم</div>
+                <div class="review-value" id="rev-name"></div>
+              </div>
+              <div class="review-item">
+                <div class="review-label">البريد الإلكتروني</div>
+                <div class="review-value" id="rev-email"></div>
+              </div>
+              <div class="review-item">
+                <div class="review-label">الجامعة</div>
+                <div class="review-value" id="rev-uni"></div>
+              </div>
+              <div class="review-item">
+                <div class="review-label">الكلية والتخصص</div>
+                <div class="review-value" id="rev-spec"></div>
+              </div>
+              <div class="review-item" id="rev-sid-container" style="display: none;">
+                <div class="review-label">الرقم الجامعي</div>
+                <div class="review-value" id="rev-sid"></div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label style="display: flex; align-items: flex-start; gap: 8px; font-weight: normal; cursor: pointer;">
+                <input type="checkbox" id="terms" required style="margin-top: 4px;">
+                <span>أوافق على <a href="#">الشروط والأحكام</a> و <a href="#">سياسة الخصوصية</a> الخاصة بالمنصة وأتعهد بصحة البيانات المدخلة.</span>
+              </label>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" id="btn-prev-3">تعديل البيانات</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit">إنشاء الحساب</button>
+            </div>
+          </div>
+        </form>
+        
+        <div class="auth-footer">
+          لديك حساب بالفعل؟ <a href="index.html">تسجيل الدخول</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Step Management
+      let currentStep = 1;
+      const totalSteps = 3;
+      const formData = {};
+
+      const errorAlert = document.getElementById('error-alert');
+      const showStep = (step) => {
+        document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
+        
+        // Update indicators
+        for(let i = 1; i <= totalSteps; i++) {
+          const ind = document.getElementById(`indicator-${i}`);
+          if (i < step) {
+            ind.className = 'step completed';
+            ind.innerHTML = '✓';
+          } else if (i === step) {
+            ind.className = 'step active';
+            ind.innerHTML = i;
+          } else {
+            ind.className = 'step';
+            ind.innerHTML = i;
+          }
+        }
+        errorAlert.style.display = 'none';
+      };
+
+      // Step 1: Role Selection
+      const roleOptions = document.querySelectorAll('.role-option');
+      const roleInput = document.getElementById('role');
+      const btnNext1 = document.getElementById('btn-next-1');
+
+      roleOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+          roleOptions.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          roleInput.value = opt.dataset.role;
+          btnNext1.disabled = false;
+        });
+      });
+
+      btnNext1.addEventListener('click', () => {
+        formData.role = roleInput.value;
+        const sidGroup = document.getElementById('student-id-group');
+        const sidInput = document.getElementById('student_id');
+        
+        if (formData.role === 'student') {
+          sidGroup.style.display = 'block';
+          sidInput.required = true;
+        } else {
+          sidGroup.style.display = 'none';
+          sidInput.required = false;
+        }
+        currentStep = 2;
+        showStep(currentStep);
+      });
+
+      // Step 2: Form Logic - Hierarchy
+      const uniSelect = document.getElementById('university');
+      const colSelect = document.getElementById('college');
+      const specSelect = document.getElementById('specialization');
+      const pwd = document.getElementById('password');
+      const strengthBar = document.getElementById('strength-bar');
+      const strengthText = document.getElementById('strength-text');
+
+      // Wire university → college cascade
+      uniSelect.addEventListener('change', () => {
+        if (typeof populateCollegeSelect === 'function') {
+          populateCollegeSelect(colSelect, uniSelect.value);
+          specSelect.innerHTML = '<option value="">اختر التخصص</option>';
+          specSelect.disabled = true;
+        }
+      });
+
+      colSelect.addEventListener('change', () => {
+        if (typeof populateSpecializationSelect === 'function') {
+          populateSpecializationSelect(specSelect, uniSelect.value, colSelect.value);
+        }
+      });
+
+      // Password strength
+      pwd.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length === 0) {
+          strengthBar.className = 'strength-bar';
+          strengthText.textContent = 'يجب أن تحتوي على 8 أحرف على الأقل';
+        } else if (val.length < 8) {
+          strengthBar.className = 'strength-bar strength-weak';
+          strengthText.textContent = 'كلمة المرور ضعيفة (أقل من 8 أحرف)';
+        } else if (val.match(/[a-z]/) && val.match(/[0-9]/) && val.match(/[^a-zA-Z0-9]/)) {
+          strengthBar.className = 'strength-bar strength-strong';
+          strengthText.textContent = 'كلمة المرور قوية';
+        } else {
+          strengthBar.className = 'strength-bar strength-medium';
+          strengthText.textContent = 'كلمة المرور متوسطة';
+        }
+      });
+
+      document.getElementById('btn-prev-2').addEventListener('click', () => {
+        currentStep = 1;
+        showStep(currentStep);
+      });
+
+      document.getElementById('btn-next-2').addEventListener('click', () => {
+        // Validate fields
+        const requiredFields = ['full_name', 'email', 'password', 'confirm_password', 'university', 'college', 'specialization'];
+        if (formData.role === 'student') requiredFields.push('student_id');
+        
+        let isValid = true;
+        requiredFields.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value) isValid = false;
+        });
+
+        if (!isValid) {
+          errorAlert.textContent = 'الرجاء تعبئة جميع الحقول المطلوبة';
+          errorAlert.style.display = 'block';
+          return;
+        }
+
+        if (pwd.value !== document.getElementById('confirm_password').value) {
+          errorAlert.textContent = 'كلمات المرور غير متطابقة';
+          errorAlert.style.display = 'block';
+          return;
+        }
+
+        // Gather data
+        requiredFields.forEach(id => { formData[id] = document.getElementById(id).value; });
+
+        // Populate Review Step
+        document.getElementById('rev-role').textContent = formData.role === 'student' ? 'طالب' : 'مشرف أكاديمي';
+        document.getElementById('rev-name').textContent = formData.full_name;
+        document.getElementById('rev-email').textContent = formData.email;
+        document.getElementById('rev-uni').textContent = formData.university;
+        document.getElementById('rev-spec').textContent = `${formData.college} - ${formData.specialization}`;
+        
+        if (formData.role === 'student') {
+          document.getElementById('rev-sid-container').style.display = 'flex';
+          document.getElementById('rev-sid').textContent = formData.student_id;
+        }
+
+        currentStep = 3;
+        showStep(currentStep);
+      });
+
+      document.getElementById('btn-prev-3').addEventListener('click', () => {
+        currentStep = 2;
+        showStep(currentStep);
+      });
+
+      // Submit Form
+      const form = document.getElementById('register-form');
+      const submitBtn = document.getElementById('btn-submit');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!document.getElementById('terms').checked) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جاري إنشاء الحساب...';
+        errorAlert.style.display = 'none';
+
+        try {
+          if (typeof register === 'function') {
+            await register(formData);
+            
+            // Show success
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('success-alert').style.display = 'block';
+          } else {
+            throw new Error('دالة التسجيل غير متوفرة');
+          }
+        } catch (error) {
+          errorAlert.textContent = error.message || 'حدث خطأ أثناء إنشاء الحساب. تأكد من أن البريد الإلكتروني غير مستخدم مسبقاً.';
+          errorAlert.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'إنشاء الحساب';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

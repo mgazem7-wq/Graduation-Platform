@@ -1,0 +1,556 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المشروع - منصة مشاريع التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .score-meter { background: #eee; height: 6px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+        .score-fill { height: 100%; transition: width 0.3s ease; }
+        .score-fill.excellent { background: #10b981; }
+        .score-fill.good { background: #3b82f6; }
+        .score-fill.pass { background: #f59e0b; }
+        .score-fill.fail { background: #ef4444; }
+        .tab-btn { padding: 10px 18px; border: none; background: transparent; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.9rem; font-weight: 500; color: #64748b; transition: all 0.2s; }
+        .tab-btn.active { border-bottom-color: #2563eb; color: #2563eb; font-weight: 600; }
+        .tab-content { display: none; padding-top: 20px; }
+        .tab-content.active { display: block; }
+        .tab-bar { border-bottom: 1px solid #e5e7eb; display: flex; gap: 4px; }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+            <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;" title="الصفحة الرئيسية">
+                <div style="width:36px;height:36px;background:var(--color-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M2 12l10-6 10 6-10 6z"/><path d="M6 14.5V19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4.5"/></svg>
+                </div>
+                <div>
+                    <div class="sidebar-logo-text">مشاريع التخرج</div>
+                    <div class="sidebar-logo-sub">جامعة تعز</div>
+                </div>
+            </a>
+        </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">لوحة التحكم</a>
+                <a href="projects.html" class="nav-item active">المشاريع</a>
+                <a href="archive.html" class="nav-item">الأرشيف والمعرض</a>
+                <a href="settings.html" class="nav-item">الإعدادات</a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="sidebar-user-avatar">م</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebar-user-name">...</div>
+                    <div class="sidebar-user-role" id="sidebar-user-role">...</div>
+                </div>
+                <button onclick="logout()" class="btn btn-ghost btn-sm" style="margin-right:auto;" title="تسجيل الخروج">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
+                </button>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <button class="btn btn-ghost btn-icon" id="mobile-menu-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:22px;height:22px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                </button>
+                <div class="header-title" id="project-title-display">جاري التحميل...</div>
+                <div class="header-actions">
+                    <span id="project-status-badge" class="badge">...</span>
+                </div>
+            </header>
+
+            <div class="page-main" style="display: flex; gap: 24px;">
+                <!-- Left/Main Column -->
+                <div style="flex: 2; min-width: 0;">
+                    <!-- Tabs -->
+                    <div class="tab-bar">
+                        <button class="tab-btn active" data-target="tab-info">معلومات المشروع</button>
+                        <button class="tab-btn" data-target="tab-team">فريق المشروع</button>
+                        <button class="tab-btn" data-target="tab-files">الملفات</button>
+                        <button class="tab-btn" data-target="tab-history">سجل الحالة</button>
+                        <button class="tab-btn" data-target="tab-evaluations" id="tab-evals-btn">التقييمات</button>
+                    </div>
+
+                    <!-- Tab: Info -->
+                    <div class="tab-content active" id="tab-info">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 id="project-title-en" class="text-muted" style="margin-bottom: 16px; font-family: sans-serif;" dir="ltr"></h3>
+                                <h4 class="font-semibold" style="margin-bottom: 8px;">الملخص</h4>
+                                <p id="project-abstract" style="line-height: 1.8; margin-bottom: 20px;"></p>
+                                
+                                <h4 class="font-semibold" style="margin-bottom: 8px;">الكلمات المفتاحية</h4>
+                                <div class="tags-wrap" id="project-keywords" style="margin-bottom: 24px;"></div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div>
+                                        <div class="text-sm text-muted">التخصص</div>
+                                        <div class="font-semibold" id="project-specialization"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-muted">الجامعة / الكلية</div>
+                                        <div class="font-semibold" id="project-university"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Team -->
+                    <div class="tab-content" id="tab-team">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="team-panel-content">
+                                    <div class="text-muted text-center py-4">جاري التحميل...</div>
+                                </div>
+                                <!-- Role badge for current user -->
+                                <div id="my-role-badge" style="margin-top:16px;display:none;padding:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;color:#166534;font-size:0.875rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Files -->
+                    <div class="tab-content" id="tab-files">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="upload-section" class="hidden" style="border: 2px dashed #ccc; padding: 32px; text-align: center; margin-bottom: 24px; border-radius: 8px;">
+                                    <p>اسحب وأفلت الملفات هنا أو <label class="btn btn-sm btn-outline" style="cursor: pointer;">اختر ملف<input type="file" id="file-input" class="hidden"></label></p>
+                                </div>
+                                <div class="file-list" id="files-container">
+                                    <div class="empty-state text-center text-muted py-8">لا توجد ملفات مرفوعة بعد.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: History -->
+                    <div class="tab-content" id="tab-history">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="timeline-list" id="history-container">
+                                    <div class="empty-state text-center text-muted py-8">لا يوجد سجل تغييرات.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Evaluations -->
+                    <div class="tab-content" id="tab-evaluations">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="evaluations-container" style="display: flex; flex-direction: column; gap: 16px;">
+                                    <div class="empty-state text-center text-muted py-8">لا توجد تقييمات بعد.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right/Sidebar Column -->
+                <div style="flex: 1; min-width: 260px; display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Project Info Card -->
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">معلومات المشروع</h3></div>
+                        <div class="card-body" style="display: flex; flex-direction: column; gap: 14px;">
+                            <div>
+                                <div class="text-sm text-muted">المشرف الأكاديمي</div>
+                                <div class="font-semibold" id="project-supervisor">...</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted">قائد الفريق</div>
+                                <div class="font-semibold" id="project-leader">...</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted">حجم الفريق</div>
+                                <div class="font-semibold" id="project-team-size">...</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted">العام الأكاديمي</div>
+                                <div class="font-semibold" id="project-year">...</div>
+                            </div>
+                            <div id="final-grade-container" class="hidden">
+                                <div class="text-sm text-muted">الدرجة النهائية</div>
+                                <div class="font-semibold" id="project-grade">...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions Card -->
+                    <div class="card" id="actions-card">
+                        <div class="card-header"><h3 class="card-title">الإجراءات</h3></div>
+                        <div class="card-body" style="display: flex; flex-direction: column; gap: 12px;" id="actions-container">
+                            <!-- Actions injected by JS based on role -->
+                        </div>
+                    </div>
+
+                    <!-- My Role Card -->
+                    <div class="card" id="my-role-card" style="display:none;">
+                        <div class="card-body">
+                            <div id="my-role-text" style="font-size:0.9rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Status Change Modal -->
+    <div class="modal-overlay hidden" id="status-modal">
+        <div class="modal">
+            <div class="modal-header"><h3>تغيير حالة المشروع</h3></div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">الحالة الجديدة</label>
+                    <select id="new-status-select" class="form-select">
+                        <option value="draft">مسودة</option>
+                        <option value="under_review">قيد المراجعة</option>
+                        <option value="in_progress">قيد التنفيذ</option>
+                        <option value="awaiting_jury">بانتظار التحكيم</option>
+                        <option value="needs_revision">يحتاج تعديل</option>
+                        <option value="completed">مكتمل</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ملاحظات</label>
+                    <textarea id="status-note" class="form-textarea" rows="3" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('status-modal').classList.add('hidden')">إلغاء</button>
+                <button class="btn btn-primary" id="confirm-status-btn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/team.js"></script>
+    <script src="js/evaluations.js"></script>
+    <script>
+        const STATUS_LABELS = {
+            'draft': 'مسودة', 'under_review': 'قيد المراجعة', 'approved': 'مقبول',
+            'rejected': 'مرفوض', 'in_progress': 'قيد التنفيذ', 'awaiting_jury': 'بانتظار التحكيم',
+            'needs_revision': 'بحاجة لتعديل', 'completed': 'مكتمل'
+        };
+        function getStatusLabel(s) { return STATUS_LABELS[s] || s; }
+        window.getStatusLabel = getStatusLabel;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            const isPublicView = urlParams.get('public') === 'true';
+
+            if (!projectId) { window.location.href = 'projects.html'; return; }
+
+            let currentUser = null;
+            if (!isPublicView) {
+                currentUser = await getCurrentUser();
+                if (!currentUser) { window.location.href = 'index.html'; return; }
+                if (typeof updateSidebarUser === 'function') updateSidebarUser(currentUser.profile);
+                if (typeof initSidebar === 'function') initSidebar();
+            } else {
+                document.getElementById('sidebar')?.classList.add('hidden');
+                document.getElementById('tab-evals-btn')?.classList.add('hidden');
+                document.getElementById('actions-card')?.classList.add('hidden');
+            }
+
+            // Tab Navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.getElementById(e.target.dataset.target)?.classList.add('active');
+                });
+            });
+
+            // ---- Load Project ----
+            let project = null;
+
+            if (IS_DEMO_MODE) {
+                project = getDemoProject(projectId);
+                if (!project) {
+                    alert('المشروع غير موجود');
+                    window.location.href = 'projects.html';
+                    return;
+                }
+            } else {
+                const { data, error } = await supabaseClient.from('projects').select(`
+                    *, student:profiles!projects_student_id_fkey(full_name, role),
+                    supervisor:profiles!projects_supervisor_id_fkey(full_name, role)
+                `).eq('id', projectId).single();
+                if (error || !data) { alert('المشروع غير موجود'); return; }
+                project = data;
+            }
+
+            if (isPublicView && (!project.is_public || project.status !== 'completed')) {
+                alert('هذا المشروع غير متاح للعامة');
+                window.location.href = 'archive.html';
+                return;
+            }
+
+            // ---- Permission: check project membership (prevents URL hijacking) ----
+            if (!isPublicView && currentUser && currentUser.profile.role === 'student') {
+                const canView = isTeamMember(project, currentUser.user.id) ||
+                    project.student?.full_name === currentUser.profile.full_name ||
+                    project.teamLeader?.name === currentUser.profile.full_name;
+                if (!canView) {
+                    alert('لا يحق لك مشاهدة هذا المشروع.');
+                    window.location.href = 'projects.html';
+                    return;
+                }
+            }
+
+            // ---- Populate UI ----
+            document.getElementById('project-title-display').textContent = project.title;
+            document.getElementById('project-title-en').textContent = project.title_en || '';
+            document.getElementById('project-abstract').textContent = project.abstract;
+            document.getElementById('project-specialization').textContent = project.specialization;
+            document.getElementById('project-university').textContent = `${project.university || ''} / ${project.college || ''}`;
+            document.getElementById('project-year').textContent = project.academic_year;
+
+            const supEl = document.getElementById('project-supervisor');
+            if (supEl) supEl.textContent = project.supervisor?.full_name || 'لم يحدد بعد';
+
+            const leaderEl = document.getElementById('project-leader');
+            if (leaderEl) leaderEl.textContent = project.teamLeader?.name || project.student?.full_name || '-';
+
+            const teamSizeEl = document.getElementById('project-team-size');
+            if (teamSizeEl) {
+                const sz = project.teamSize || (1 + (project.teamMembers || []).length);
+                teamSizeEl.textContent = sz === 1 ? 'مشروع فردي' : `${sz} أعضاء`;
+            }
+
+            const badgeEl = document.getElementById('project-status-badge');
+            if (badgeEl) {
+                badgeEl.textContent = getStatusLabel(project.status);
+                const badgeMap = { 'in_progress': 'progress', 'awaiting_jury': 'jury', 'needs_revision': 'revision', 'under_review': 'review', 'completed': 'completed', 'approved': 'approved', 'rejected': 'rejected', 'draft': 'draft' };
+                badgeEl.className = `badge badge-${badgeMap[project.status] || project.status}`;
+            }
+
+            const keywordsWrap = document.getElementById('project-keywords');
+            (project.keywords || []).forEach(kw => {
+                const span = document.createElement('span');
+                span.className = 'tag-chip';
+                span.textContent = kw;
+                keywordsWrap.appendChild(span);
+            });
+
+            if (project.final_grade) {
+                document.getElementById('final-grade-container').classList.remove('hidden');
+                const gradeClass = project.final_grade >= 85 ? 'excellent' : project.final_grade >= 70 ? 'good' : 'pass';
+                document.getElementById('project-grade').innerHTML = `<span class="grade-chip ${gradeClass}">${project.final_grade} / 100</span>`;
+            }
+
+            // ---- Team Panel (Tab) ----
+            const teamPanelEl = document.getElementById('team-panel-content');
+            if (teamPanelEl && typeof renderTeamPanel === 'function') {
+                teamPanelEl.innerHTML = renderTeamPanel(project);
+            }
+
+            // Show current user's role in project
+            if (currentUser && currentUser.profile.role === 'student') {
+                const myRole = getUserProjectRole(project, currentUser.user.id) ||
+                    (project.teamLeader?.name === currentUser.profile.full_name ? 'leader' :
+                     (project.teamMembers || []).some(m => m.name === currentUser.profile.full_name) ? 'member' : null);
+
+                if (myRole) {
+                    const roleCard = document.getElementById('my-role-card');
+                    const roleText = document.getElementById('my-role-text');
+                    if (roleCard && roleText) {
+                        roleCard.style.display = 'block';
+                        roleText.innerHTML = myRole === 'leader'
+                            ? `<div style="display:flex;align-items:center;gap:8px;"><span>👑</span><span>أنت <strong>قائد هذا الفريق</strong></span></div>`
+                            : `<div style="display:flex;align-items:center;gap:8px;"><span>👤</span><span>أنت <strong>عضو</strong> في هذا الفريق</span></div>`;
+                    }
+                }
+            }
+
+            // ---- Setup Actions ----
+            if (!isPublicView && currentUser) {
+                const role = currentUser.profile.role;
+                const actionsContainer = document.getElementById('actions-container');
+                const myProjectRole = getUserProjectRole(project, currentUser.user.id) ||
+                    (project.teamLeader?.name === currentUser.profile.full_name ? 'leader' :
+                     (project.teamMembers || []).some(m => m.name === currentUser.profile.full_name) ? 'member' : null);
+
+                // Only TEAM LEADER can edit/submit (not plain members)
+                if (role === 'student' && myProjectRole === 'leader') {
+                    if (project.status === 'draft' || project.status === 'needs_revision') {
+                        actionsContainer.innerHTML += `<button class="btn btn-secondary w-full" onclick="showStatusModal('under_review')">إرسال للمراجعة</button>`;
+                        document.getElementById('upload-section')?.classList.remove('hidden');
+                    }
+                } else if (role === 'student' && myProjectRole === 'member') {
+                    actionsContainer.innerHTML += `<div style="font-size:0.85rem;color:#64748b;text-align:center;padding:8px;background:#f8fafc;border-radius:8px;">أنت عضو في هذا المشروع. صلاحيات التعديل محجوزة لقائد الفريق.</div>`;
+                }
+
+                if (role === 'supervisor' || role === 'admin') {
+                    actionsContainer.innerHTML += `<button class="btn btn-outline w-full" onclick="showStatusModal()">تغيير الحالة</button>`;
+                    actionsContainer.innerHTML += `<a href="project-evaluate.html?id=${projectId}" class="btn btn-primary w-full">إضافة / تحديث التقييم</a>`;
+                    document.getElementById('upload-section')?.classList.remove('hidden');
+                } else if (role === 'jury') {
+                    actionsContainer.innerHTML += `<a href="project-evaluate.html?id=${projectId}" class="btn btn-primary w-full">إضافة تقييم / تحديث</a>`;
+                }
+
+                if (actionsContainer.innerHTML.trim() === '') {
+                    actionsContainer.innerHTML = `<div class="text-muted text-center text-sm">لا توجد إجراءات متاحة</div>`;
+                }
+
+                loadFiles();
+                loadHistory();
+                loadEvaluations();
+            } else if (isPublicView) {
+                loadFiles(true);
+            }
+
+            // ---- Load Files ----
+            async function loadFiles(publicOnly = false) {
+                const container = document.getElementById('files-container');
+                if (!container) return;
+
+                if (IS_DEMO_MODE) {
+                    container.innerHTML = '<div class="empty-state text-center text-muted py-4">لا توجد ملفات في الوضع التجريبي.</div>';
+                    return;
+                }
+
+                let query = supabaseClient.from('project_files').select('*').eq('project_id', projectId);
+                if (publicOnly) query = query.eq('is_public', true);
+                const { data: files } = await query;
+
+                if (files && files.length > 0) {
+                    container.innerHTML = files.map(f => `
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #eee;border-radius:8px;margin-bottom:8px;">
+                            <div>
+                                <div class="font-semibold">${f.file_name}</div>
+                                <div class="text-sm text-muted">${Math.round(f.file_size/1024)} KB • ${new Date(f.uploaded_at).toLocaleDateString('ar-SA')}</div>
+                            </div>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                ${f.is_public ? '<span class="badge badge-completed">عام</span>' : ''}
+                                <a href="${f.file_url}" target="_blank" class="btn btn-sm btn-secondary">تحميل</a>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div class="empty-state text-center text-muted py-8">لا توجد ملفات مرفوعة بعد.</div>';
+                }
+            }
+
+            // ---- Load History ----
+            async function loadHistory() {
+                const container = document.getElementById('history-container');
+                if (!container) return;
+
+                let history = [];
+                if (IS_DEMO_MODE) {
+                    history = getDemoHistory(projectId);
+                } else {
+                    const { data } = await supabaseClient.from('status_history')
+                        .select('*, changed:profiles!status_history_changed_by_fkey(full_name)')
+                        .eq('project_id', projectId).order('changed_at', { ascending: false });
+                    history = data || [];
+                }
+
+                if (history.length > 0) {
+                    container.innerHTML = history.map(h => `
+                        <div style="display:flex;gap:16px;margin-bottom:16px;">
+                            <div style="display:flex;flex-direction:column;align-items:center;">
+                                <div style="width:12px;height:12px;border-radius:50%;background:#2563eb;flex-shrink:0;"></div>
+                                <div style="width:2px;height:100%;background:#e5e7eb;flex:1;"></div>
+                            </div>
+                            <div style="padding-bottom:16px;">
+                                <div class="font-semibold">تغيرت الحالة إلى: ${getStatusLabel(h.new_status)}</div>
+                                <div class="text-sm text-muted">${new Date(h.changed_at).toLocaleString('ar-SA')} بواسطة ${h.changed?.full_name || 'النظام'}</div>
+                                ${h.note ? `<div style="margin-top:8px;padding:10px;background:#f9f9f9;border-radius:4px;font-size:0.9rem;">${h.note}</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div class="empty-state text-center text-muted py-4">لا يوجد سجل تغييرات.</div>';
+                }
+            }
+
+            // ---- Load Evaluations ----
+            async function loadEvaluations() {
+                const container = document.getElementById('evaluations-container');
+                if (!container) return;
+
+                let evals = [];
+                if (IS_DEMO_MODE) {
+                    evals = getDemoEvaluations(projectId);
+                } else {
+                    if (typeof window.loadProjectEvaluations === 'function') {
+                        evals = await window.loadProjectEvaluations(projectId);
+                    }
+                }
+
+                if (evals.length > 0) {
+                    container.innerHTML = evals.map(e => {
+                        if (typeof window.renderEvaluationCard === 'function') {
+                            return window.renderEvaluationCard(e);
+                        }
+                        return `<div class="card"><div class="card-body">تقييم من ${e.evaluator?.full_name || 'مقيّم'}: ${e.total_score}/100</div></div>`;
+                    }).join('');
+                } else {
+                    container.innerHTML = '<div class="empty-state text-center text-muted py-8">لا توجد تقييمات بعد.</div>';
+                }
+            }
+
+            // ---- File Upload ----
+            const fileInput = document.getElementById('file-input');
+            if (fileInput) {
+                fileInput.addEventListener('change', async (e) => {
+                    if (!e.target.files.length || IS_DEMO_MODE) {
+                        if (IS_DEMO_MODE) alert('رفع الملفات غير متاح في الوضع التجريبي.');
+                        return;
+                    }
+                    const file = e.target.files[0];
+                    try {
+                        const isPublic = confirm('هل تريد جعل هذا الملف عاماً؟');
+                        await window.uploadProjectFile(projectId, file, 'report', isPublic);
+                        alert('تم رفع الملف بنجاح');
+                        loadFiles();
+                    } catch (err) { console.error(err); alert('حدث خطأ أثناء الرفع'); }
+                });
+            }
+
+            // ---- Status Modal ----
+            window.showStatusModal = (prefillStatus) => {
+                if (prefillStatus) document.getElementById('new-status-select').value = prefillStatus;
+                document.getElementById('status-modal').classList.remove('hidden');
+            };
+
+            document.getElementById('confirm-status-btn')?.addEventListener('click', async () => {
+                const newStatus = document.getElementById('new-status-select').value;
+                const note = document.getElementById('status-note').value;
+                try {
+                    if (IS_DEMO_MODE) {
+                        const projects = LS.get('gp_projects', []);
+                        const idx = projects.findIndex(p => p.id === projectId);
+                        if (idx >= 0) {
+                            projects[idx].status = newStatus;
+                            projects[idx].updated_at = new Date().toISOString();
+                            LS.set('gp_projects', projects);
+                        }
+                        addDemoHistory(projectId, newStatus, currentUser?.profile.full_name || 'المشرف', note);
+                    } else {
+                        await window.changeProjectStatus(projectId, newStatus, note);
+                    }
+                    alert('تم تغيير الحالة بنجاح');
+                    window.location.reload();
+                } catch (err) { console.error(err); alert('خطأ في تغيير الحالة'); }
+            });
+        });
+    </script>
+</body>
+</html>
